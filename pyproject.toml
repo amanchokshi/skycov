@@ -1,0 +1,71 @@
+[project]
+name = "skycov"
+version = "0.1.0"
+description = "A Bayesian toolkit for simulating and optimising satellite sky coverage over astronomical observatories"
+keywords = ["satellite", "simulation", "orbit", "radio", "astronomy"]
+authors = [{ name = "Aman Chokshi", email = "aman.chokshi@mcgill.ca" }]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+    "arviz>=1.1.0",
+    "cmasher>=1.9.2",
+    "h5netcdf>=1.8.1",
+    "healpy>=1.19.0",
+    "matplotlib>=3.10.9",
+    "netcdf4>=1.7.4",
+    "numpy>=2.3.5",
+    "pymc>=6.0.1",
+    "scipy>=1.17.1",
+    "skyweaver>=0.1.2",
+]
+
+[dependency-groups]
+dev = [
+    "ipympl>=0.10.0",
+    "ipython>=9.13.0",
+    "jupyterlab>=4.5.7",
+    "poethepoet>=0.46.0",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.14",
+    "twine>=6.2.0",
+]
+
+[tool.poe.tasks]
+fmt = "ruff format"
+lint = "ruff check --fix"
+check = "pyright"
+coverage = { cmd = "pytest --cov=skycov --cov-report=term-missing"}
+all = ["fmt", "lint", "check", "coverage"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 128
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "A",  # built-in shadowing
+    "E",  # style
+    "F",  # pyflakes
+    "I",  # import sorting
+    "N",  # naming
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["skycov"]
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.13"
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+include = ["src"]
+exclude = ["tests", "**/__pycache__"]
